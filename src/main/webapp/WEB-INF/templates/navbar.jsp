@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Evaluación 2</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,8 +30,8 @@
         <li class="nav-item">
           <a class="nav-link" href="/ventas">Ventas</a>
         </li>
-        
-      </ul>
+        </ul>
+       
     </div>
   </div>
 </nav>

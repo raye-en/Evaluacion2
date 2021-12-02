@@ -1,5 +1,8 @@
 package com.nttdata.controllers;
 
+import java.security.Principal;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +33,41 @@ public class UsuarioController {
 		return "usuario/usuario.jsp";
 	}
 	
-	@RequestMapping("/login")
-	
-	public String login(@Valid @ModelAttribute("usuario") Usuario usuario)
-	{
-		System.out.println(usuario.getNombre()+" "+usuario.getEmail()+" "+usuario.getPassword());
-			
-		usuarioService.insertarUsuario(usuario);
-		
-		return "redirect:/usuario";
+	/*http://localhost:8080/usuario/registrarjsp */
+	@RequestMapping("/registrarjsp")
+	public String registrarjsp(@ModelAttribute("usuario") Usuario usuario) {
+
+		return "usuario/registro.jsp";
 	}
+	
+
+	@RequestMapping("/registrar")
+	public String registrar(@Valid @ModelAttribute("usuario") Usuario usuario)
+	{
+		Usuario usuario2 = usuarioService.findByEmail(usuario.getEmail());
+		if(usuario2!=null) {
+			System.out.println("usuario ya existe");
+		}else {
+			//usuarioService.registroUsuario(usuario);
+			usuarioService.persistirUsuarioRol(usuario);
+		}
+		//retorno mensaje
+		
+		return "redirect:/login";
+	}
+	
+	
+	@RequestMapping("/login")
+		public String login(Principal principal, Model model,HttpSession session) {
+		String nombre= principal.getName();
+	
+		Usuario usuario = usuarioService.findByNombre(nombre);
+		model.addAttribute("nombre_usuario", usuario.getNombre());
+		
+		return "home.jsp";
+	}
+	
+
 	
 	@RequestMapping("/eliminar")
 	public String eliminarUsuario(@RequestParam("id") Long id) {
